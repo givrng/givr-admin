@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organization Verification Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="dashboard">
+      <header class="dashboard__header">
+        <div>
+          <p class="eyebrow">Verification Console</p>
+          <h1>Organization Screening Dashboard</h1>
+          <p class="subtitle">
+            Compare submitted organization details with CAC documents and verify authenticity.
+          </p>
+        </div>
+        <button class="ghost-btn">Export Review Log</button>
+      </header>
+
+      <section class="metrics" aria-label="Verification metrics">
+        <article>
+          <p>Pending Reviews</p>
+          <strong>12</strong>
+        </article>
+        <article>
+          <p>Approved Today</p>
+          <strong>8</strong>
+        </article>
+        <article>
+          <p>Flagged</p>
+          <strong>3</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <aside class="queue" aria-label="Organization queue">
+          <div class="queue__head">
+            <h2>Review Queue</h2>
+            <span>Newest first</span>
+          </div>
+          <ul id="organization-list"></ul>
+        </aside>
+
+        <section class="details" aria-live="polite">
+          <div class="details__head">
+            <h2 id="org-name">Select an organization</h2>
+            <span id="org-status" class="status status--pending">Pending</span>
+          </div>
+
+          <div class="details-grid">
+            <article>
+              <h3>Submitted Details</h3>
+              <dl id="submitted-info"></dl>
+            </article>
+            <article>
+              <h3>CAC Document Details</h3>
+              <dl id="cac-info"></dl>
+            </article>
+          </div>
+
+          <article class="review-panel">
+            <h3>Review Notes</h3>
+            <textarea id="review-notes" rows="4" placeholder="Add findings from document checks, signature validation, and address verification..."></textarea>
+            <div class="actions">
+              <button id="flag-btn" class="danger">Flag mismatch</button>
+              <button id="approve-btn" class="primary">Approve organization</button>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
