@@ -27,10 +27,6 @@ export interface QueueItemProps {
   onSelect: (id: string) => void;
 }
 
-export interface SubmittedDetailsListProps {
-  fields: OrganizationFields;
-}
-
 export interface ComparisonPanelProps {
   title: string;
   fields: OrganizationFields;
@@ -39,13 +35,6 @@ export interface ComparisonPanelProps {
 export interface CacDocumentPanelProps {
   imageUrl: string;
   organizationName: string;
-  onPreview: () => void;
-}
-
-export interface ComparisonModalProps {
-  isOpen: boolean;
-  organization: Organization | null;
-  onClose: () => void;
 }
 
 export interface ReviewActionsProps {
