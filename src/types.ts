@@ -1,4 +1,5 @@
 export type VerificationStatus = "pending" | "approved" | "flagged";
+export type AdminRole = "SUPER_ADMIN" | "ADMIN";
 
 export interface OrganizationFields {
   organizationName: string;
@@ -16,6 +17,21 @@ export interface Organization {
   reviewNote?: string;
 }
 
+export interface AuthUser {
+  email: string;
+  role: AdminRole;
+}
+
+export interface AuthState {
+  user: AuthUser | null;
+  token: string | null;
+}
+
+export interface AuthContextValue extends AuthState {
+  login: (token: string) => void;
+  logout: () => void;
+}
+
 export interface MetricCardProps {
   label: string;
   value: number;
@@ -27,6 +43,10 @@ export interface QueueItemProps {
   onSelect: (id: string) => void;
 }
 
+export interface SubmittedDetailsListProps {
+  fields: OrganizationFields;
+}
+
 export interface ComparisonPanelProps {
   title: string;
   fields: OrganizationFields;
@@ -35,6 +55,13 @@ export interface ComparisonPanelProps {
 export interface CacDocumentPanelProps {
   imageUrl: string;
   organizationName: string;
+  onPreview: () => void;
+}
+
+export interface ComparisonModalProps {
+  isOpen: boolean;
+  organization: Organization | null;
+  onClose: () => void;
 }
 
 export interface ReviewActionsProps {
