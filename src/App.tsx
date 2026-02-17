@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { CacDocumentPanel } from "./components/CacDocumentPanel";
+import { ComparisonModal } from "./components/ComparisonModal";
 import { ComparisonPanel } from "./components/ComparisonPanel";
 import { MetricCard } from "./components/MetricCard";
 import { QueueItem } from "./components/QueueItem";
 import { ReviewActions } from "./components/ReviewActions";
 import { initialOrganizations } from "./data/organizations";
 import type { Organization, VerificationStatus } from "./types";
-import { ComparisonModal } from "./components/ComparisonModal";
 
 const statusBadgeClassMap: Record<VerificationStatus, string> = {
   pending: "bg-amber-100 text-amber-700",
@@ -21,10 +21,10 @@ function toStatusLabel(status: VerificationStatus): string {
 export default function App() {
   const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations);
   const [selectedId, setSelectedId] = useState<string>(initialOrganizations[0].id);
-  const [comparisonModalOpen, setComparisonModalOpen] = useState<boolean>(false);
+  const [cmparisonModalOpen, setComparisonModalOpen] = useState(false);
 
   const selectedOrganization = useMemo(
-    () => organizations.find((organization) => organization.id === selectedId),
+    () => organizations.find((organization) => organization.id === selectedId) ?? null,
     [organizations, selectedId],
   );
 
@@ -73,33 +73,14 @@ export default function App() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-5 py-8">
-      <header className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-widest text-blue-700">Verification Console</p>
-          <h1 className="mt-1 text-2xl font-semibold text-slate-900">
-            Organization Screening Dashboard
-          </h1>
-          <p className="mt-1 max-w-2xl text-sm text-slate-500">
-            Compare organization submissions with CAC document images to confirm authenticity
-            before approval.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="rounded-lg bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700"
-        >
-          Export Review Log
-        </button>
-      </header>
-
+    <>
       <section className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-3">
         <MetricCard label="Pending Reviews" value={metrics.pending} />
         <MetricCard label="Approved" value={metrics.approved} />
         <MetricCard label="Flagged" value={metrics.flagged} />
       </section>
 
-      <section className="grid grid-cols-1 gap-4 lg:grid-cols-[320px_1fr]">
+      <section className="grid grid-cols-1 gap-4 xl:grid-cols-[320px_1fr]">
         <aside className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="mb-3 flex items-baseline justify-between">
             <h2 className="text-base font-semibold text-slate-900">Review Queue</h2>
@@ -134,8 +115,9 @@ export default function App() {
             <CacDocumentPanel
               imageUrl={selectedOrganization.cacDocumentImageUrl}
               organizationName={selectedOrganization.name}
+              onPreview={()=>{}}
             />
-            
+            <ComparisonModal isOpen={cmparisonModalOpen} onClose={()=>setComparisonModalOpen(false)} organization={selectedOrganization}/>            
             <button 
             className="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white xl:col-span-2"
             onClick={()=>{
@@ -152,9 +134,6 @@ export default function App() {
           />
         </section>
       </section>
-      <ComparisonModal isOpen={comparisonModalOpen} organization={selectedOrganization} onClose={()=>{
-              setComparisonModalOpen(false)
-            }}/>
-    </main>
+    </>
   );
 }
