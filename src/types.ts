@@ -31,7 +31,15 @@ export interface ComparisonPanelProps {
   title: string;
   fields: OrganizationFields;
 }
+export interface ComparisonModalProps{ 
+  isOpen: boolean;
+  organization: Organization;
+  onClose: ()=>void; 
+}
 
+export interface SubmittedDetailsListProps{
+  fields: OrganizationFields;
+}
 export interface CacDocumentPanelProps {
   imageUrl: string;
   organizationName: string;

@@ -2,7 +2,7 @@ import type { CacDocumentPanelProps } from "../types";
 
 export function CacDocumentPanel({ imageUrl, organizationName }: CacDocumentPanelProps) {
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-4">
+    <article className="rounded-xl border border-slate-200 bg-white p-4 w-full">
       <h3 className="mb-3 text-sm font-semibold text-slate-900">CAC Document</h3>
       <img
         src={imageUrl}

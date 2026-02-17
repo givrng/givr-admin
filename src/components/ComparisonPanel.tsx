@@ -15,7 +15,7 @@ export function ComparisonPanel({ title, fields }: ComparisonPanelProps) {
         {(Object.keys(fieldLabels) as Array<keyof typeof fieldLabels>).map((key) => (
           <div key={key} className="contents">
             <dt className="text-slate-500">{fieldLabels[key]}</dt>
-            <dd className="font-medium text-slate-800">{fields[key]}</dd>
+            <dd className="font-medium text-slate-800 text-wrap: pretty">{fields[key]}</dd>
           </div>
         ))}
       </dl>

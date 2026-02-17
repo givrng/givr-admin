@@ -6,6 +6,7 @@ import { QueueItem } from "./components/QueueItem";
 import { ReviewActions } from "./components/ReviewActions";
 import { initialOrganizations } from "./data/organizations";
 import type { Organization, VerificationStatus } from "./types";
+import { ComparisonModal } from "./components/ComparisonModal";
 
 const statusBadgeClassMap: Record<VerificationStatus, string> = {
   pending: "bg-amber-100 text-amber-700",
@@ -18,9 +19,9 @@ function toStatusLabel(status: VerificationStatus): string {
 }
 
 export default function App() {
-  const [organizations, setOrganizations] =
-    useState<Organization[]>(initialOrganizations);
+  const [organizations, setOrganizations] = useState<Organization[]>(initialOrganizations);
   const [selectedId, setSelectedId] = useState<string>(initialOrganizations[0].id);
+  const [comparisonModalOpen, setComparisonModalOpen] = useState<boolean>(false);
 
   const selectedOrganization = useMemo(
     () => organizations.find((organization) => organization.id === selectedId),
@@ -134,6 +135,13 @@ export default function App() {
               imageUrl={selectedOrganization.cacDocumentImageUrl}
               organizationName={selectedOrganization.name}
             />
+            
+            <button 
+            className="rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white xl:col-span-2"
+            onClick={()=>{
+              setComparisonModalOpen(true)
+              
+            }}>View Document</button>
           </div>
 
           <ReviewActions
@@ -144,6 +152,9 @@ export default function App() {
           />
         </section>
       </section>
+      <ComparisonModal isOpen={comparisonModalOpen} organization={selectedOrganization} onClose={()=>{
+              setComparisonModalOpen(false)
+            }}/>
     </main>
   );
 }
