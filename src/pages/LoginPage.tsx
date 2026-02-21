@@ -1,44 +1,102 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { LoginProps } from "../types";
+import useAuthFetch from "../hooks/useAuthFetch";
+import { PageLoader } from "../icon/icons";
+import { useVerifyAuth } from "../auth/AuthContext";
 
 export function LoginPage() {
-  const { login } = useAuth();
+  
   const navigate = useNavigate();
-  const [tokenInput, setTokenInput] = useState("");
+  const [formFields, setFormFields] = useState<LoginProps>({
+    email: "", 
+    otp: ""
+  });
+  const [otpRequested, setOtpRequested] = useState(false)
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const auth = useVerifyAuth()
+  const [isLoading, setIsloading] = useState(false)
+
+  const {API} = useAuthFetch()
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(tokenInput.trim());
-    navigate("/verify", { replace: true });
+    try{
+      setIsloading(true)
+      await API().post("/auth/verify-otp", formFields, {withCredentials:true})
+      auth?.signin()
+      navigate("/verify", { replace: true });
+    }finally{
+      setIsloading(false)
+    }
   };
 
+  const requestOtp = async (event: React.FormEvent<HTMLFormElement>)=>{
+    event.preventDefault();
+    try{
+      setIsloading(true)
+      await API().post("/auth/request-otp", formFields) 
+      setOtpRequested(true)
+    }finally{
+      setIsloading(false)
+    }
+  }
+  
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-5 py-10">
-      <form onSubmit={onSubmit} className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-xs uppercase tracking-widest text-blue-700">Passwordless Sign-In</p>
-        <h1 className="mt-2 text-xl font-semibold text-slate-900">Admin access</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Enter your login token to sign in. Your role is extracted from the JWT payload.
-        </p>
-
-        <label htmlFor="token" className="mt-4 block text-sm font-medium text-slate-700">
-          JWT token
+      {isLoading && <PageLoader />}
+      {!otpRequested? <form onSubmit={requestOtp} className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-xs uppercase tracking-widest text-blue-700 ">Passwordless Sign-In</p>
+        <h1 className="mt-2 text-xl font-semibold text-slate-900 text-center">Admin access</h1>
+        
+        <label htmlFor="token" className="mt-4 block text-xs font-medium text-slate-700">
+          Organization Email
         </label>
-        <textarea
-          id="token"
+        <input
+          id="email"
+          type="email"
           required
-          rows={5}
-          value={tokenInput}
-          onChange={(event) => setTokenInput(event.target.value)}
+          value={formFields.email}
+          onChange={(event=>{
+            setFormFields(prev=>({
+              ...prev, 
+              email: event.target.value
+            }))
+          })}
           className="mt-1 w-full rounded-lg border border-slate-300 p-3 text-sm"
-          placeholder="Paste JWT here"
+          placeholder="joe@givr.ng"
         />
 
         <button type="submit" className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
-          Sign in
+          Request OTP
+        </button>
+      </form>:
+       <form onSubmit={onSubmit} className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h1 className="mt-2 text-xl font-semibold text-slate-900 text-center">Admin access</h1>
+
+        <p className="text-xs uppercase tracking-widest text-blue-700 ">If email is authorised, a verification code has been sent.</p>
+        <label htmlFor="token" className="mt-4 block text-xs font-medium text-slate-700">
+          Enter OTP sent to admin account
+        </label>
+        <input
+          id="otp"
+          type="text"
+          required
+          value={formFields.otp}
+          onChange={(event) => setFormFields(prev=>({
+            ...prev, 
+            otp: event.target.value
+          }))}
+          className="mt-1 w-full rounded-lg border border-slate-300 p-3 text-sm text-center"
+          placeholder="- - - - - -"
+        />
+
+        <button type="submit" className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white">
+          Login
         </button>
       </form>
+      }
+
     </main>
   );
 }

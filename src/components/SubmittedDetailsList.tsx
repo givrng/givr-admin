@@ -3,8 +3,7 @@ import type { OrganizationFields, SubmittedDetailsListProps } from "../types";
 const fieldLabels: Record<keyof OrganizationFields, string> = {
   organizationName: "Organization Name",
   address: "Address",
-  cacRegNumber: "CAC Registration Number",
-  contactEmail: "Contact Email",
+  cacRegNumber: "CAC Registration Number"
 };
 
 export function SubmittedDetailsList({ fields }: SubmittedDetailsListProps) {
