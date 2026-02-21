@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 export type VerificationStatus = "Pending" | "Approved" | "Rejected";
 export type AdminRole = "SUPER_ADMIN" | "ADMIN";
 

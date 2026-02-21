@@ -1,14 +1,14 @@
-import type { QueueItemProps } from "../types";
+import type { QueueItemProps, VerificationStatus } from "../types";
 
-const statusClassMap = {
+const statusClassMap: Record<VerificationStatus, string> = {
   Pending: "text-amber-700",
   Approved: "text-emerald-700",
-  Flagged: "text-rose-700",
+  Rejected: "text-rose-700",
 } as const;
 
 export function QueueItem({ organization, isActive, onSelect }: QueueItemProps) {
   const label = organization.status[0].toUpperCase() + organization.status.slice(1);
-
+  
   return (
     <button
       type="button"

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LoginProps } from "../types";
+import type { LoginProps } from "../types";
 import useAuthFetch from "../hooks/useAuthFetch";
 import { PageLoader } from "../icon/icons";
 import { useVerifyAuth } from "../auth/AuthContext";
