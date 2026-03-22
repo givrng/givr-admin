@@ -1,14 +1,14 @@
-import type { QueueItemProps, VerificationStatus } from "../types";
+import type { QueueItemProps, ReviewStatus } from "../types";
 
-const statusClassMap: Record<VerificationStatus, string> = {
+const statusClassMap:Record<ReviewStatus, string> = {
   Pending: "text-amber-700",
   Approved: "text-emerald-700",
   Rejected: "text-rose-700",
 } as const;
 
 export function QueueItem({ organization, isActive, onSelect }: QueueItemProps) {
-  const label = organization.status[0].toUpperCase() + organization.status.slice(1);
-  
+  const label = organization.reviewStatus[0].toUpperCase() + organization.reviewStatus.slice(1);
+
   return (
     <button
       type="button"
@@ -20,7 +20,7 @@ export function QueueItem({ organization, isActive, onSelect }: QueueItemProps) 
       }`}
     >
       <p className="font-semibold text-slate-900">{organization.name}</p>
-      <p className={`text-sm ${statusClassMap[organization.status]}`}>
+      <p className={`text-sm ${statusClassMap[organization.reviewStatus]}`}>
         {organization.id} · {label}
       </p>
     </button>

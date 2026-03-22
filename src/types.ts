@@ -1,12 +1,20 @@
 import type { JSX } from "react";
 
-export type VerificationStatus = "Pending" | "Approved" | "Rejected";
+export type ReviewStatus = "Pending" | "Approved" | "Rejected";
 export type AdminRole = "SUPER_ADMIN" | "ADMIN";
-
+export type IdType =  "DL"|"vNIN"|"VOTER_CARD"|"PASSPORT"
+export type VerificationStatus = "VERIFIED" | "UNVERIFIED" | "AUTOMATIC_VERIFICATION_FAILED" | "AUTOMATIC_VERIFICATION_SUCCEEDED"|"AUTOMATIC_VERIFICATION_PENDING"|"PENDING";
 export interface OrganizationFields {
   organizationName: string;
   address: string;
   cacRegNumber: string;
+
+  idNumber:string;
+  idType: IdType;
+  contactFullName:string;
+  contactDateOfBirth:string;
+  verificationStatus:string;
+  remark:string;
 }
 export interface ButtonProps {
   children: React.ReactNode;
@@ -19,7 +27,7 @@ export interface Organization {
   name: string;
   submitted: OrganizationFields;
   cacDocumentImageUrl: string;
-  status: VerificationStatus;
+  reviewStatus: ReviewStatus;
   reviewNote?: string;
 }
 

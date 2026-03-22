@@ -11,7 +11,7 @@ export default function useAuthFetch(){
     let refreshPromise:Promise<number>|null=null;
     
     const ApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-    console.log(ApiBaseUrl)
+    
     const authFetch = async (url:string, options?:RequestInit):Promise<Response> =>{
         let response = await fetch(url, {...options, credentials: "include"});
 
@@ -43,7 +43,7 @@ export default function useAuthFetch(){
 
         const instance = axios.create({
             baseURL: `${ApiBaseUrl}/admin`,
-            timeout: 2500,
+            timeout: 5000,
             headers: {
                 'Content-Type': 'application/json',
             },

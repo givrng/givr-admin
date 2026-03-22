@@ -1,10 +1,23 @@
-import type { OrganizationFields, SubmittedDetailsListProps } from "../types";
+import type { IdType, OrganizationFields, SubmittedDetailsListProps } from "../types";
 
 const fieldLabels: Record<keyof OrganizationFields, string> = {
   organizationName: "Organization Name",
   address: "Address",
-  cacRegNumber: "CAC Registration Number"
+  cacRegNumber: "CAC Registration Number",
+  contactDateOfBirth: "Contact D.O.B",
+  contactFullName: "Contact fullname",
+  idType: "Identification Type",
+  idNumber: "Identification Number",
+  verificationStatus: "Automatic Verification status",
+  remark: "Automatic verification remark"
 };
+
+const idlabel: Record<IdType, string> = {
+  DL: "Driver's License",
+  PASSPORT: "Internation Passport",
+  vNIN: "Virtual NIN",
+  VOTER_CARD: "Voter's card"
+}
 
 export function SubmittedDetailsList({ fields }: SubmittedDetailsListProps) {
   return (
@@ -17,7 +30,7 @@ export function SubmittedDetailsList({ fields }: SubmittedDetailsListProps) {
           <dt className="text-xs font-medium uppercase tracking-wide text-slate-500 sm:text-sm sm:normal-case sm:tracking-normal">
             {fieldLabels[key]}
           </dt>
-          <dd className="m-0 break-words font-medium text-slate-800">{fields[key]}</dd>
+          <dd className="m-0 break-words font-medium text-slate-800">{key=="idType"? idlabel[fields[key]] : fields[key]}</dd>
         </div>
       ))}
     </dl>

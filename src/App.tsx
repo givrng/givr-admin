@@ -6,19 +6,19 @@ import { MetricCard } from "./components/MetricCard";
 import { QueueItem } from "./components/QueueItem";
 import { ReviewActions } from "./components/ReviewActions";
 
-import type { Organization, VerificationStatus } from "./types";
+import type { Organization, ReviewStatus } from "./types";
 import useAuthFetch from "./hooks/useAuthFetch";
 import { PageLoader } from "./icon/icons";
 import { LucideClock, LucideInbox, LucideRefreshCcw, LucideShieldAlert, LucideShieldCheck } from 'lucide-react';
 import { useConfirmAsk } from "./hooks/useConfirm";
 
-const statusBadgeClassMap: Record<VerificationStatus, string> = {
+const statusBadgeClassMap: Record<ReviewStatus, string> = {
   Pending: "bg-amber-100 text-amber-700",
   Approved: "bg-emerald-100 text-emerald-700",
   Rejected: "bg-rose-100 text-rose-700",
 };
 
-function toStatusLabel(status: VerificationStatus): string {
+function toStatusLabel(status: ReviewStatus): string {
   return status[0].toUpperCase() + status.slice(1);
 }
 
@@ -27,7 +27,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string>("");
   const [cmparisonModalOpen, setComparisonModalOpen] = useState(false);
   const {confirmAsk, ConfirmDialog} = useConfirmAsk()
-  const [filter, setFilter] = useState<VerificationStatus>("Pending")
+  const [filter, setFilter] = useState<ReviewStatus>("Pending")
   const [isLoading, setIsLoading] = useState(false)
   let [refreshList, setRefreshList] = useState(false);
   const {API} = useAuthFetch()
@@ -69,16 +69,16 @@ export default function App() {
 
   const metrics = useMemo(
     () => ({
-      pending: organizations.filter((organization) => organization.status === "Pending").length,
-      approved: organizations.filter((organization) => organization.status === "Approved").length,
-      flagged: organizations.filter((organization) => organization.status === "Rejected").length,
+      pending: organizations.filter((organization) => organization.reviewStatus === "Pending").length,
+      approved: organizations.filter((organization) => organization.reviewStatus === "Approved").length,
+      flagged: organizations.filter((organization) => organization.reviewStatus === "Rejected").length,
     }),
     [organizations],
   );
 
-  const filteredOrganizations: Organization[] = useMemo(()=>organizations.filter(p=>p.status == filter), [filter, organizations])
+  const filteredOrganizations: Organization[] = useMemo(()=>organizations.filter(p=>p.reviewStatus == filter), [filter, organizations])
 
-  const updateOrganizationStatus = (status: VerificationStatus): void => {
+  const updateOrganizationStatus = (status: ReviewStatus): void => {
     setOrganizations((previousOrganizations) =>
       previousOrganizations.map((organization) => {
         if (organization.id !== selectedId) {
@@ -167,7 +167,7 @@ export default function App() {
      handleReview(false)
   }
 
-  const handleSetActive = (status:VerificationStatus)=>{
+  const handleSetActive = (status: ReviewStatus)=>{
     setFilter(status)
   }
   if (!organizations) {
@@ -210,10 +210,10 @@ export default function App() {
             <h2 className="text-base font-bold text-slate-900">{selectedOrganization.name}</h2>
             <span
               className={`rounded-full px-4 py-1 text-xs font-bold uppercase tracking-wide ${
-                statusBadgeClassMap[selectedOrganization.status]
+                statusBadgeClassMap[selectedOrganization.reviewStatus]
               }`}
             >
-              {toStatusLabel(selectedOrganization.status)}
+              {toStatusLabel(selectedOrganization.reviewStatus)}
             </span>
           </div>
 
