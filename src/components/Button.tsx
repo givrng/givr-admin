@@ -1,4 +1,4 @@
-import { ButtonProps } from "../types";
+import type { ButtonProps } from "../types";
 
 export const Button: React.FC<ButtonProps> = ({ children, variant, className = '', onClick }) => {
   // Adjusted base classes for a cleaner look matching the image
